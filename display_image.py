@@ -4,28 +4,30 @@ import os
 import glob
 from PIL import Image
 
-# Directory where your images are stored
-image_directory: Path = "c:/Users/rauldiaz/src/streamlit_test/images"
-
-def find_image(filename):
+def find_image(image_directory: Path, filename: str) -> Path | None:
+    image_path: Path = Path(filename)
     # Search for the image in the directory tree
-    for filepath in image_directory.rglob(filename):
+    for filepath in image_directory.rglob(image_path):
         return filepath
     return None
 
 def main():
     st.title("Image Viewer")
 
+    
+    # Directory where your images are stored
+    image_directory: Path = "c:/Users/rauldiaz/src/streamlit_test/images"
+
     # User input for filename
     filename = st.text_input("Enter the name of the image file")
 
     if filename:
         # Find the image in the directory
-        image_path = find_image(filename)
+        image_path = find_image(image_directory, filename)
 
-        if image_path and os.path.isfile(image_path):
+        if image_path and image_path.is_file():
             # Display the image
-            image = Image.open(image_path)
+            image = Image.open(image_path.as_posix())
             st.image(image, caption=f"Displaying: {filename}")
         else:
             st.warning("Image not found. Please check the filename.")
