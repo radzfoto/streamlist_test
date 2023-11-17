@@ -5,12 +5,11 @@ import glob
 from PIL import Image
 
 # Directory where your images are stored
-image_path: Path = "c:/Users/rauldiaz/src/streamlit_test/images"
-image_directory: str = image_path.as_posix()
+image_directory: Path = "c:/Users/rauldiaz/src/streamlit_test/images"
 
 def find_image(filename):
     # Search for the image in the directory tree
-    for filepath in glob.iglob(f'{image_directory}/**/{filename}', recursive=True):
+    for filepath in image_directory.rglob(filename):
         return filepath
     return None
 
