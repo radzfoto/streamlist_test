@@ -1,22 +1,27 @@
 import streamlit as st
 from pathlib import Path
-import os
-import glob
 from PIL import Image
+
+import socket
+
+# Run from command line: streamlit run display_image.py
 
 def find_image(image_directory: Path, filename: str) -> Path | None:
     image_path: Path = Path(filename)
     # Search for the image in the directory tree
-    for filepath in image_directory.rglob(image_path):
+    for filepath in image_directory.rglob(image_path.as_posix()):
         return filepath
     return None
 
 def main():
     st.title("Image Viewer")
 
-    
+    server_name = socket.getfqdn()
+    print("Machine: " + server_name)
+    print("Home dir: " + (Path().home().as_posix()))
+
     # Directory where your images are stored
-    image_directory: Path = "c:/Users/rauldiaz/src/streamlit_test/images"
+    image_directory: Path = Path().home() / "src" / "streamlit_test" / "images"
 
     # User input for filename
     filename = st.text_input("Enter the name of the image file")
